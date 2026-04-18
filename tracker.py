@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """
 Instagram Tracker - GitHub Actions Version
@@ -65,15 +64,17 @@ class InstagramTracker:
                 if fields.get('Status') != 'Active':
                     continue
                 
-                # Get username from IG URL (priority) or IG User (fallback)
-                ig_url = fields.get('IG URL', '').strip()
+                # Get username from IG User (priority) or IG URL (fallback)
                 ig_user = fields.get('IG User', '').strip()
+                ig_url = fields.get('IG URL', '').strip()
                 
                 username = None
-                if ig_url:
-                    username = self.extract_username_from_url(ig_url)
-                if not username and ig_user:
+                # Try IG User column first (most reliable)
+                if ig_user:
                     username = ig_user.lstrip('@')
+                # Fall back to extracting from URL if IG User is empty
+                elif ig_url:
+                    username = self.extract_username_from_url(ig_url)
                 
                 if not username:
                     continue
