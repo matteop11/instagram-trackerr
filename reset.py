@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#!/usr/bin/env python3
 """
 Daily Reset Script
 Resets "Posted Today" to 0 at midnight Melbourne time
@@ -40,13 +39,13 @@ def main():
     all_records = table.all()
     print(f"   Found {len(all_records)} records")
     
-    # Reset Posted Today to 0
-    print("\n🔄 Resetting 'Posted Today' to 0...")
+    # Reset Posted today to 0
+    print("\n🔄 Resetting 'Posted today' to 0...")
     updated_count = 0
     
     for record in all_records:
         try:
-            table.update(record['id'], {"Posted Today": 0})
+            table.update(record['id'], {"Posted today": 0})
             updated_count += 1
         except Exception as e:
             print(f"   ⚠️  Failed to reset {record['id']}: {e}")
