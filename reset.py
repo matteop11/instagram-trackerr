@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Daily Reset Script
 Resets "Posted Today" to 0 at midnight Melbourne time
