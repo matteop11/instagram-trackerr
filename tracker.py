@@ -180,7 +180,7 @@ class InstagramTracker:
         """Update Airtable record"""
         try:
             update_data = {
-                "Posted Today": data['posts_today'],
+                "Posted today": data['posts_today'],
                 "Insta Followers": data['follower_count']
             }
             
