@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 """
 Instagram Tracker - GitHub Actions Version
