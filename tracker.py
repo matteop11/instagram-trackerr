@@ -20,7 +20,7 @@ class InstagramTracker:
         # Configuration from environment variables
         self.airtable_token = os.environ.get('AIRTABLE_TOKEN')
         self.airtable_base_id = os.environ.get('AIRTABLE_BASE_ID', 'appqblRpkPud9ywI9')
-        self.airtable_table_name = os.environ.get('AIRTABLE_TABLE_NAME', 'Manual Op')
+        self.airtable_table_id = os.environ.get('AIRTABLE_TABLE_ID', 'tbl4Jx1Km6vvzeqrQ')
         self.melbourne_tz = pytz.timezone('Australia/Melbourne')
         
         # Initialize clients
@@ -35,9 +35,9 @@ class InstagramTracker:
             post_metadata_txt_pattern=''
         )
         
-        # Initialize Airtable
+        # Initialize Airtable - using table ID instead of name
         self.api = Api(self.airtable_token)
-        self.table = self.api.table(self.airtable_base_id, self.airtable_table_name)
+        self.table = self.api.table(self.airtable_base_id, self.airtable_table_id)
     
     def extract_username_from_url(self, url):
         """Extract username from Instagram URL"""
