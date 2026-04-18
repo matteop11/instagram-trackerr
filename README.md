@@ -1,1 +1,1 @@
-# instagram-trackerr
+# instagram-tracker
