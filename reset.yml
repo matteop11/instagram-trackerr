@@ -1,0 +1,35 @@
+name: Daily Reset
+
+on:
+  schedule:
+    # Run at midnight Melbourne time (14:00 UTC when not in DST, 13:00 UTC during DST)
+    # Using 14:00 UTC to be safe
+    - cron: '0 14 * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install pyairtable pytz
+      
+      - name: Run daily reset
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+          AIRTABLE_BASE_ID: appqblRpkPud9ywI9
+          AIRTABLE_TABLE_NAME: Manual Op
+        run: |
+          python reset.py
