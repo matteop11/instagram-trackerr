@@ -23,16 +23,16 @@ def main():
     # Get Airtable credentials
     airtable_token = os.environ.get('AIRTABLE_TOKEN')
     airtable_base_id = os.environ.get('AIRTABLE_BASE_ID', 'appqblRpkPud9ywI9')
-    airtable_table_name = os.environ.get('AIRTABLE_TABLE_NAME', 'Manual Op')
+    airtable_table_id = os.environ.get('AIRTABLE_TABLE_ID', 'tbl4Jx1Km6vvzeqrQ')
     
     if not airtable_token:
         print("❌ ERROR: AIRTABLE_TOKEN not set!")
         exit(1)
     
-    # Initialize Airtable
+    # Initialize Airtable - using table ID instead of name
     print("\n📥 Connecting to Airtable...")
     api = Api(airtable_token)
-    table = api.table(airtable_base_id, airtable_table_name)
+    table = api.table(airtable_base_id, airtable_table_id)
     
     # Get all records
     print("📋 Fetching all records...")
