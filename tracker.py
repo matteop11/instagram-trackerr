@@ -23,7 +23,7 @@ class InstagramTracker:
         self.airtable_table_id = os.environ.get('AIRTABLE_TABLE_ID', 'tbl4Jx1Km6vvzeqrQ')
         self.melbourne_tz = pytz.timezone('Australia/Melbourne')
         
-        # Initialize clients
+        # Initialize clients with better settings to avoid blocking
         self.loader = instaloader.Instaloader(
             download_pictures=False,
             download_videos=False,
@@ -32,7 +32,9 @@ class InstagramTracker:
             download_comments=False,
             save_metadata=False,
             compress_json=False,
-            post_metadata_txt_pattern=''
+            post_metadata_txt_pattern='',
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+            max_connection_attempts=3
         )
         
         # Initialize Airtable - using table ID instead of name
@@ -151,7 +153,8 @@ class InstagramTracker:
             }
             
         except instaloader.exceptions.ProfileNotExistsException:
-            print(f"  ⚠️  @{username} NOT FOUND - setting to 11")
+            print(f"  ⚠️  @{username} NOT FOUND")
+            print(f"      Double-check spelling in Airtable IG User column")
             return {
                 'follower_count': 11,
                 'posts_today': 0,
@@ -160,7 +163,8 @@ class InstagramTracker:
             }
         
         except instaloader.exceptions.ConnectionException as e:
-            print(f"  ⚠️  @{username} CONNECTION ERROR - skipping")
+            print(f"  ⚠️  @{username} CONNECTION ERROR: {str(e)}")
+            print(f"      Instagram may be rate limiting. Will retry next hour.")
             return {
                 'follower_count': 0,
                 'posts_today': 0,
@@ -168,8 +172,18 @@ class InstagramTracker:
                 'error': 'connection'
             }
         
+        except instaloader.exceptions.QueryReturnedNotFoundException:
+            print(f"  ⚠️  @{username} NOT FOUND (404)")
+            print(f"      Account doesn't exist or was deleted")
+            return {
+                'follower_count': 11,
+                'posts_today': 0,
+                'last_post_time': None,
+                'error': 'not_found'
+            }
+        
         except Exception as e:
-            print(f"  ❌ Error fetching @{username}: {e}")
+            print(f"  ❌ Error fetching @{username}: {type(e).__name__} - {e}")
             return {
                 'follower_count': 11,
                 'posts_today': 0,
