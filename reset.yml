@@ -30,6 +30,6 @@ jobs:
         env:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
           AIRTABLE_BASE_ID: appqblRpkPud9ywI9
-          AIRTABLE_TABLE_NAME: Manual Op
+          AIRTABLE_TABLE_ID: tbl4Jx1Km6vvzeqrQ
         run: |
           python reset.py
